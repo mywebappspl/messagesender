@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    show-sql: true
+  mail:
+    host: 'smtp.mailtrap.io'
+    port: 2525
+    username: username
+    password: password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  datasource:
+    url: 'jdbc:mysql://mysqlurl
+    username: user
+    password: password
+  jpa.hibernate:
+    ddl-auto: validate
+  rabbitmq:
+    addresses: 'amqps://RabbitMQurl'

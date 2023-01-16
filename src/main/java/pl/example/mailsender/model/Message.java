@@ -12,10 +12,10 @@ import javax.persistence.*;
 public class Message {
     @Id
     private Integer id;
-    private Integer msg_status;
+    private Integer msgStatus;
     @OneToOne
     @JoinColumn(name = "message_id")
-    private Content content;
+    private MessageContent content;
     @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;

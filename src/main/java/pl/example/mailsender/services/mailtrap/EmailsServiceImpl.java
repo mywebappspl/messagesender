@@ -1,5 +1,9 @@
 package pl.example.mailsender.services.mailtrap;
 
+import lombok.AllArgsConstructor;
+import org.apache.logging.slf4j.SLF4JLogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,42 +12,28 @@ import pl.example.mailsender.services.EmailsService;
 import pl.example.mailsender.services.MsgStatusService;
 
 @Service
+@AllArgsConstructor
 public class EmailsServiceImpl implements EmailsService {
-    private JavaMailSender javaMailSender;
-    private MsgStatusService msgStatusService;
+    private static final Logger logger = LoggerFactory.getLogger(SLF4JLogger.class);
+    private final JavaMailSender javaMailSender;
+    private final MsgStatusService msgStatusService;
     @Value("${spring.mail.username}")
     private String sender;
-
-    public EmailsServiceImpl(final JavaMailSender javaMailSender, final MsgStatusService msgStatusService) {
-        this.javaMailSender = javaMailSender;
-        this.msgStatusService=msgStatusService;
-    }
-
     @Override
-    public String SendMail(final EmailDetails details) {
-        System.out.println(details.getMsgId());
+    public void sendMail(final EmailDetails details) {
         try {
-
-            // Creating a simple mail message
             SimpleMailMessage mailMessage
                     = new SimpleMailMessage();
-
-            // Setting up necessary details
             mailMessage.setFrom(sender);
             mailMessage.setTo(details.getRecipient());
             mailMessage.setText(details.getMsgBody());
             mailMessage.setSubject(details.getSubject());
-
-            // Sending the mail
             javaMailSender.send(mailMessage);
-            msgStatusService.SetMsgStatus(details.getMsgId(),3);
-            return "Mail Sent Successfully...";
+            msgStatusService.setMsgStatus(details.getMsgId(),3);
         }
-
-        // Catch block to handle the exceptions
         catch (Exception e) {
-            msgStatusService.SetMsgStatus(details.getMsgId(),4);
-            return "Error while Sending Mail";
+            msgStatusService.setMsgStatus(details.getMsgId(),4);
+            logger.error("message with id"+details.getMsgId()+"cannot be send");
         }
     }
 }

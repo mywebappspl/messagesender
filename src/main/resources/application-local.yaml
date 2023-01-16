@@ -14,7 +14,7 @@ spring:
             enable: true
 
   datasource:
-    url: 'jdbc:mysql://mysqlurl
+    url: 'jdbc:mysql://mysqlurl'
     username: user
     password: password
   jpa.hibernate:

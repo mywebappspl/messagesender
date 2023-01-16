@@ -9,9 +9,8 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "Messages")
-public class Content {
+public class MessageContent {
     @Id
     private Integer id;
-
     private String content;
    }
